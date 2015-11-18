@@ -14,6 +14,7 @@
 '''
 from charm.toolbox.Hash import ChamHash,Hash
 from charm.toolbox.integergroup import IntegerGroupQ
+from charm.toolbox.conversion import Conversion
 
 debug = False
 class ChamHash_Adm05(ChamHash):
@@ -27,6 +28,8 @@ class ChamHash_Adm05(ChamHash):
     >>> c = chamHash.hash(public_key, msg)
     >>> c == chamHash.hash(public_key, msg, c[1], c[2])
     True
+    >>> c == chamHash.hash(public_key, msg + 'extra', c[1], c[2])
+    False
     """
 
     def __init__(self, p=0, q=0):
@@ -52,6 +55,7 @@ class ChamHash_Adm05(ChamHash):
         return (pk, sk)
     
     def hash(self, pk, m, r = 0, s = 0):
+        m = Conversion.siginput2integer(m)
         p,q = group.p, group.q
         if r == 0: r = group.random()
         if s == 0: s = group.random()        

@@ -32,6 +32,9 @@ class ChamHash_HW09(ChamHash):
     >>> (hash2, r) = chamHash.hash(public_key, msg, r)
     >>> hash1 == hash2
     True
+    >>> (hash3, r) = chamHash.hash(public_key, msg + 'extra', r)
+    >>> hash1 == hash3
+    False
     """
     def __init__(self):
         global group

@@ -1,5 +1,6 @@
 from charm.toolbox.integergroup import IntegerGroupQ
 from charm.toolbox.PKSig import PKSig
+from charm.toolbox.conversion import Conversion
 
 debug = False
 class SchnorrSig(PKSig):
@@ -14,6 +15,8 @@ class SchnorrSig(PKSig):
     >>> signature = pksig.sign(public_key, secret_key, msg)
     >>> pksig.verify(public_key, signature, msg)
     True
+    >>> pksig.verify(public_key, signature, msg + 'extra')
+    False
     """
     def __init__(self):
         PKSig.__init__(self)
@@ -33,6 +36,7 @@ class SchnorrSig(PKSig):
         return ({'y':y, 'g':g}, x)
     
     def sign(self, pk, x, M):
+        M = Conversion.siginput2integer(M)
         p,q = group.p, group.q
         k = group.random()
         r = (pk['g'] ** k) % p
@@ -42,6 +46,7 @@ class SchnorrSig(PKSig):
         return {'e':e, 's':s }
     
     def verify(self, pk, sig, M):
+        M = Conversion.siginput2integer(M)
         p = group.p
         r = ((pk['g'] ** sig['s']) * (pk['y'] ** sig['e'])) % p
         if debug: print("Verifying...")

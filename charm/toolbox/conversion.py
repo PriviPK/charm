@@ -29,6 +29,22 @@ class Conversion(object):
     '''
 
     @classmethod
+    def siginput2integer(self, M):
+        # XXX: JOHNNY: Fixes a bug in the signature schemes (hopefully)
+        if type(M) != str:
+            raise TypeError("Please, only pass bytes or strings to sign.")
+
+        # The problem: IntegerGroupQ::hash() uses hashInt() defined in
+        # integermodule.c, and hashInt() can only work with modular/non-modular
+        # integers as inputs. If other inputs are given, they are simply ignored
+        # and not accumulated in the hash => insecure signature
+        # The fix: we convert the bytes to an integer (no truncation is done:
+        # integer is as big as the byte data)
+        M = Conversion.bytes2integer(M)
+
+        return M
+
+    @classmethod
     def bytes2element(self, bytestr):
         '''Converts a byte string to a group element'''
         pass

@@ -55,6 +55,7 @@ class IntegerGroup:
         return bitsize(self.q) / 8 
     
     def isMember(self, x):
+        # FIXME: JOHNNY: This does not work
         return x.isCongruent()
        
     def random(self, max=0):
@@ -159,6 +160,7 @@ class IntegerGroupQ:
         return bitsize(self.q) / 8 
     
     def isMember(self, x):
+        # FIXME: JOHNNY: This does not work
         return x.isCongruent()
        
     def random(self, max=0):
@@ -175,11 +177,15 @@ class IntegerGroupQ:
     
     def hash(self, *args):
         if isinstance(args, tuple):
+            #print 'tuple:', args, len(args)
             return hashInt(args, self.p, self.q, True)
+
+        #print 'nontuple:', args
         List = []
         for i in args:
             List.append(i)
         return hashInt(tuple(List), self.p, self.q, True)
+        #return hashInt(args, self.p, self.q, True)
 
     def serialize(self, object):
         assert type(object) == integer, "cannot serialize non-integer types"
